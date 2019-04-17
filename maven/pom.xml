@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.sum</groupId>
+    <artifactId>maven</artifactId>
+    <packaging>pom</packaging>
+    <version>${maven.version}</version>
+    <modules>
+        <module>module0</module>
+        <module>module1</module>
+        <module>parent0</module>
+    </modules>
+
+    <dependencyManagement>
+        <!--
+        只是声明依赖，并不引入，而dependency会引入jar包
+        这里声明的jar包version会覆盖dependency的,解决了jar包冲突
+        e.g jersey  这里声明后，dependency无需版本号
+        -->
+        <dependencies>
+            <dependency>
+                <groupId>com.sun.jersey</groupId>
+                <artifactId>jersey-client</artifactId>
+                <version>1.19.4</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+
+    <!--版本-->
+    <properties>
+        <maven.version>1.0-SNAPSHOT</maven.version>
+    </properties>
+
+
+    <!--模块的父子依赖，子pom会继承父pom的denpency依赖-->
+    <!--modules对项目来说只是一个聚合，子pom继承父pom，如果父pom中有多个modules，同级modules里面引用的包，子pom之间不可见-->
+    <!--
+    项目maven 有三个模块 module0, module1, parent0 -》每个模块以 maven为parent
+    maven 中依赖 jackson-core-asl 子模块都可见 -》即module0中可以直接使用 jackson-core-asl
+
+    子模块中的依赖，其他模块不可见 -》module0 的依赖 common-io 其他module   module1与parent0不可见
+
+    如果模块间需要相互依赖的话：
+    1. **推荐**  父pom中依赖子模块的，那么子模块可访问其他模块定义的类 -》如下:依赖了module0和module1 那么对module0,module1和parent0都可见
+    IDEA右侧的maven界面查看模块依赖就可以发现
+    2. 子模块中依赖其他子模块，那么该模块可以访问依赖模块定义的类 -》如:module0的pom 依赖了parent0 那么module0可以访问parent0
+
+    -->
+    <dependencies>
+        <dependency>
+        <groupId>org.codehaus.jackson</groupId>
+        <artifactId>jackson-core-asl</artifactId>
+        <version>1.9.13</version>
+        </dependency>
+        <!-- 依赖module0 和module1 的两个模块-->
+        <dependency>
+            <groupId>com.sum</groupId>
+            <artifactId>module0</artifactId>
+            <version>${maven.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sum</groupId>
+            <artifactId>module1</artifactId>
+            <version>${maven.version}</version>
+        </dependency>
+
+        <!--使用dependencyMange-->
+        <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-client</artifactId>
+        </dependency>
+    </dependencies>
+</project>
