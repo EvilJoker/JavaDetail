@@ -22,6 +22,9 @@ BLOG 目录
 
 - JNDI-Java Naming and Directory Interface (JNDI): javax.naming.*
 
+DEMO 样例
+- maven
+- jackson
 
 
 ### 作者的简书博客
