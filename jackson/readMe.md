@@ -107,7 +107,7 @@ java流行的JSON library。Jackson是一系列java数据处理工具（data-pro
 ```
 
  ## DEMO
- [githup:https://github.com/EvilJoker/JavaDetail/tree/master/jackson/src](https://github.com/EvilJoker/JavaDetail/tree/master/jackson/src)
+ [githup:https://github.com/EvilJoker/JavaDetail/tree/master/jackson/src](https://github.com/EvilJoker/JavaDetail/tree/master/jackson)
  以下Demo基于 `MAVEN参考三配置`
  
  **[java to json](http://www.studytrails.com/java/json/jackson-create-json/)** 
