@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.introspect.AnnotatedField;
 import com.fasterxml.jackson.databind.introspect.AnnotatedMethod;
 
 public class Java2Json_ObjectMapper {
+
     //文档 http://www.studytrails.com/java/json/jackson-create-json/
     //这种模式使得一个类和JSON绑定，一个类对应一个JSON
     public static void main(String[] args) throws Exception{
