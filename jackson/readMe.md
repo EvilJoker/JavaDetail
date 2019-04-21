@@ -1,4 +1,6 @@
 
+[TOC]
+
 官网：[https://github.com/FasterXML/jackson](https://github.com/FasterXML/jackson)
 ## 描述
 java流行的JSON library。Jackson是一系列java数据处理工具（data-processing tools），包括流式的json解析/生成库（streaming JSON parser/generator library）,数据匹配绑定库（data-binding library:POJOS和JSON相互转化）,和
