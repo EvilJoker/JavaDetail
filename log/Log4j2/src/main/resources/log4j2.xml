@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--https://www.cnblogs.com/lzb1096101803/p/5796849.html-->
+<!-- 设置log4j2的自身log级别为warn -->
+<!-- OFF > FATAL > ERROR > WARN > INFO > DEBUG > TRACE > ALL -->
+<configuration status="WARN" monitorInterval="30">
+    <!--自定义的属性-->
+    <Properties>
+        <property name="name1">value</property>
+    </Properties>
+    <appenders>
+        <!---->
+        <console name="Console" target="SYSTEM_OUT">
+            <!--%msg是信息 %n 换行 %t线程名-->
+            <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%t] %5p %logger{36} - %msg%n"/>
+        </console>
+        <!--输出到根目录下形如：~/logs/-->
+        <!--这个当前的日志为info.log当一天过去后，filePattern就生效了，自动保留昨日的日志-->
+        <RollingFile name="RollingFileInfo" fileName="Log4j2/src/main/resources/Log/info.log"
+
+                     filePattern="${sys:user.home}/logs/$${date:yyyy-MM}/info-%d{yyyy-MM-dd}-%i.log">
+            <!--控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch）-->
+            <Filters>
+                <ThresholdFilter level="INFO"/>
+                <ThresholdFilter level="WARN" onMatch="DENY" onMismatch="NEUTRAL"/>
+            </Filters>
+            <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
+            <Policies>
+                <!--删除最旧的文件的策略-->
+                <!--默认（校验）滚动时间为1小时-->
+                <TimeBasedTriggeringPolicy/>
+                <!--最大只存100M大于100M的被删除-->
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+        </RollingFile>
+
+        <RollingFile name="RollingFileWarn" fileName="Log4j2/src/main/resources/Log/warn.log"
+                     filePattern="${sys:user.home}/logs/$${date:yyyy-MM}/warn-%d{yyyy-MM-dd}-%i.log">
+            <Filters>
+                <!--blog中有解释，这两条组合将只会输出WARN级别的信息-->
+                <ThresholdFilter level="WARN"/>
+                <ThresholdFilter level="ERROR" onMatch="DENY" onMismatch="NEUTRAL"/>
+            </Filters>
+            <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+        </RollingFile>
+
+        <RollingFile name="RollingFileError" fileName="Log4j2/src/main/resources/Log/error.log"
+                     filePattern="${sys:user.home}/logs/$${date:yyyy-MM}/error-%d{yyyy-MM-dd}-%i.log">
+            <ThresholdFilter level="ERROR"/>
+            <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+        </RollingFile>
+
+        <RollingFile name="myRollingFile" fileName="Log4j2/src/main/resources/Log/app-info.log"
+                     filePattern="${sys:user.home}/logs/$${date:yyyy-MM}/error-%d{yyyy-MM-dd}-%i.log">
+            <ThresholdFilter level="all"/>
+            <!--输出的样式-->
+            <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <!--max为最大文件数量，可以不设置-->
+            <DefaultRolloverStrategy max="20"/>
+        </RollingFile>
+    </appenders>
+
+    <loggers>
+
+        <!--过滤掉spring和mybatis的一些无用的DEBUG信息-->
+        <logger name="org.springframework" level="INFO"></logger>
+        <logger name="org.mybatis" level="INFO"></logger>
+        <!--指定具体类或包的输出日志级别,此处为第一步，通过此处的日志才会被捕获-->
+        <logger name="log.MyApp" level="info"></logger>
+        <!-- additivity="false" 确保日志不会被 root捕获到-->
+        <!--并且该类的日志成功被捕获只放到了app-info.log中去-->
+        <logger name="log.MyApp2" level="all" additivity="false">
+            <appender-ref ref="myRollingFile"/>
+        </logger>
+
+        <root level="all">
+            <appender-ref ref="Console"/>
+            <appender-ref ref="RollingFileInfo"/>
+            <appender-ref ref="RollingFileWarn"/>
+            <appender-ref ref="RollingFileError"/>
+        </root>
+    </loggers>
+
+</configuration>
