@@ -15,6 +15,8 @@ import java.sql.SQLOutput;
 import java.time.Instant;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.concurrent.Future;
+import java.util.concurrent.FutureTask;
 
 /**
  * <code>TimeClient</code> description
@@ -152,7 +154,6 @@ public class TimeClientHandle implements Runnable {
             }
         }
     }
-
     private void stop() {
         stop = true;
     }
