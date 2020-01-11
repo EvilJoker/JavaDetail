@@ -1,0 +1,2 @@
+# jdk得序列化
+主要看ObjectDecoder和ObjectEncoder用法，和添加格式
